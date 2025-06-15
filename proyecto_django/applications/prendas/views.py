@@ -18,6 +18,7 @@ class PrendaListView(AdminRequiredMixin, ListView):
     template_name = 'prendas/listar.html'
     context_object_name = 'prendas'
     paginate_by = 8  # Muestra 8 productos por página para admin
+    ordering = ['id']
 
 class PrendaListUser(ListView):
     """Vista de catálogo para usuarios normales - solo visualización"""
@@ -25,6 +26,7 @@ class PrendaListUser(ListView):
     template_name = 'prendas/listar_como_usuario.html'
     context_object_name = 'prendas'
     paginate_by = 6  # Muestra 6 productos por página
+    ordering = ['id']
 
 
 @method_decorator(login_required, name='dispatch')
@@ -106,7 +108,7 @@ def procesar_compra(request):
     """Procesa la compra del carrito actual"""
     carrito, created = Carrito.objects.get_or_create(usuario=request.user)
     items = carrito.items.select_related('prenda').all()
-    
+
     if not items:
         messages.error(request, 'Tu carrito está vacío.')
         return redirect('prendas:ver_carrito')
@@ -115,17 +117,17 @@ def procesar_compra(request):
     for item in items:
         if not item.prenda.tiene_stock(item.cantidad):
             items_sin_stock.append(f"{item.prenda.nombre_prenda} (solicitado: {item.cantidad}, disponible: {item.prenda.stock})")
-    
+
     if items_sin_stock:
         messages.error(request, f'No hay suficiente stock para: {", ".join(items_sin_stock)}')
         return redirect('prendas:ver_carrito')
-    
+
     # Procesar la compra
     try:
         with transaction.atomic():
             total_compra = carrito.total_precio()
             cantidad_productos = sum(item.cantidad for item in items)
-            
+
             # Crear registros en el historial y reducir stock
             for item in items:
                 # Crear registro de historial
@@ -135,13 +137,13 @@ def procesar_compra(request):
                     cantidad=item.cantidad,
                     total_pago=item.subtotal()
                 )
-                
+
                 # Reducir stock
                 item.prenda.reducir_stock(item.cantidad)
-            
+
             # Limpiar carrito
             carrito.limpiar()
-            
+
             # Redirigir a página de éxito con datos
             request.session['compra_exitosa'] = {
                 'total_compra': float(total_compra),
@@ -149,7 +151,7 @@ def procesar_compra(request):
                 'fecha_compra': timezone.now().isoformat()
             }
             return redirect('prendas:compra_exitosa')
-    
+
     except Exception as e:
         messages.error(request, f'Error al procesar la compra: {str(e)}')
         return redirect('prendas:ver_carrito')
@@ -159,16 +161,16 @@ def confirmar_compra(request):
     """Vista para confirmar la compra antes de procesarla"""
     carrito, created = Carrito.objects.get_or_create(usuario=request.user)
     items = carrito.items.select_related('prenda').all()
-    
+
     if not items:
         messages.error(request, 'Tu carrito está vacío.')
         return redirect('prendas:ver_carrito')
-    
+
     # Verificar stock y calcular total
     items_con_info = []
     total = 0
     hay_problemas_stock = False
-    
+
     for item in items:
         item_info = {
             'item': item,
@@ -180,37 +182,37 @@ def confirmar_compra(request):
             hay_problemas_stock = True
         items_con_info.append(item_info)
         total += item_info['subtotal']
-    
+
     context = {
         'items': items_con_info,
         'total': total,
         'hay_problemas_stock': hay_problemas_stock
     }
-    
+
     return render(request, 'prendas/confirmar_compra.html', context)
 
 @login_required
 def compra_exitosa(request):
     """Vista para mostrar la confirmación de compra exitosa"""
     from datetime import datetime
-    
+
     # Obtener datos de la compra de la sesión
     datos_compra = request.session.get('compra_exitosa')
-    
+
     if not datos_compra:
         messages.error(request, 'No se encontraron datos de la compra.')
         return redirect('prendas:ver_carrito')
-    
+
     # Convertir fecha ISO a datetime
     fecha_compra = datetime.fromisoformat(datos_compra['fecha_compra'])
-    
+
     context = {
         'total_compra': datos_compra['total_compra'],
         'cantidad_productos': datos_compra['cantidad_productos'],
         'fecha_compra': fecha_compra,
     }
-    
+
     # Limpiar datos de la sesión
     del request.session['compra_exitosa']
-    
+
     return render(request, 'prendas/compra_exitosa.html', context)

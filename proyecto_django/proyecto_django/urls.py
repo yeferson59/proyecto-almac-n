@@ -28,9 +28,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('',include(('applications.usuarios.urls', 'usuarios'), namespace='usuarios')),  # Ajusta según tu estructura
     re_path('prendas/', include(('applications.prendas.urls', 'prendas'), namespace='prendas')),
-    re_path('historial/', include(('applications.historial.urls', 'historial'), namespace='historial')),   
+    re_path('historial/', include(('applications.historial.urls', 'historial'), namespace='historial')),
 ]
 
-urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
+from django.conf import settings
+
+if settings.DEBUG or True:  # Forzar servir media en Docker/desarrollo
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'proyecto_django.views.mi_vista_404'
