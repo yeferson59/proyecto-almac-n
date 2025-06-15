@@ -9,8 +9,4 @@ services:
     volumes:
       # Monta la carpeta local de media en el contenedor
       - ./proyecto_django/media:/app/media
-    environment:
-      # Puedes agregar variables de entorno aquí si las necesitas
-      # DJANGO_SETTINGS_MODULE: proyecto_django.settings.prod
-      # DEBUG: "False"
     restart: unless-stopped
