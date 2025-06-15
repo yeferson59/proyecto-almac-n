@@ -1,12 +1,18 @@
-version: "3.9"
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: django_app
+    ports:
+      - "8000:8000"
     volumes:
-      # Monta la carpeta local de media en el contenedor
+      # Monta la carpeta local de media en el contenedor para persistencia de archivos subidos
       - ./proyecto_django/media:/app/media
+      # Monta la base de datos para persistencia
+      - ./proyecto_django/db.sqlite3:/app/proyecto_django/db.sqlite3
+    environment:
+      # Configuración para Django
+      DJANGO_SETTINGS_MODULE: proyecto_django.settings.local
+      DEBUG: "False"
     restart: unless-stopped
