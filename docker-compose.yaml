@@ -12,5 +12,14 @@ services:
     environment:
       # Configuración para Django
       DJANGO_SETTINGS_MODULE: proyecto_django.settings.local
-      DEBUG: "True"
+      DEBUG: "False"
     restart: unless-stopped
+    command:
+      [
+        "uv",
+        "run",
+        "python",
+        "proyecto_django/manage.py",
+        "runserver",
+        "0.0.0.0:8000",
+      ]
