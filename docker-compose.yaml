@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: django_app
     volumes:
-      # Monta la carpeta local de media en el contenedor para persistencia de archivos subidos
-      - ./proyecto_django/media:/app/media
+      # Volumen con nombre para persistencia garantizada de archivos media
+      - media_volume:/app/media
       # Monta la base de datos para persistencia
       - ./proyecto_django/db.sqlite3:/app/proyecto_django/db.sqlite3
     environment:
@@ -23,3 +23,5 @@ services:
         "runserver",
         "0.0.0.0:8000",
       ]
+volumes:
+  media_volume:
