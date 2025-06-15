@@ -1,199 +1,200 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Mania - Mi Cuenta</title>
+    <link rel="stylesheet" href="{% static 'css/menu_usuarios.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      .user-dashboard {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shop Mania - Mi Cuenta</title>
-  <link rel="stylesheet" href="{% static 'css/menu_usuarios.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    .user-dashboard {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+      .welcome-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
 
-    .welcome-section {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 40px;
-      border-radius: 15px;
-      margin-bottom: 30px;
-      text-align: center;
-    }
+      .welcome-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
 
-    .welcome-section h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      font-weight: 300;
-    }
+      .welcome-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
 
-    .welcome-section p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+      }
 
-    .options-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
-      margin-bottom: 30px;
-    }
+      .option-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+      }
 
-    .option-card {
-      background: white;
-      border-radius: 15px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: inherit;
-    }
+      .option-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+        color: inherit;
+      }
 
-    .option-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-      text-decoration: none;
-      color: inherit;
-    }
+      .option-card i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #667eea;
+      }
 
-    .option-card i {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      color: #667eea;
-    }
+      .option-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #333;
+      }
 
-    .option-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: #333;
-    }
+      .option-card p {
+        color: #666;
+        line-height: 1.6;
+      }
 
-    .option-card p {
-      color: #666;
-      line-height: 1.6;
-    }
+      .stats-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+      }
 
-    .stats-section {
-      background: #f8f9fa;
-      padding: 30px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-    }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
+      .stat-item {
+        text-align: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+      }
 
-    .stat-item {
-      text-align: center;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-    }
+      .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 5px;
+      }
 
-    .stat-number {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #667eea;
-      margin-bottom: 5px;
-    }
+      .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+      }
 
-    .stat-label {
-      color: #666;
-      font-size: 0.9rem;
-    }
+      .logout-section {
+        text-align: center;
+        margin-top: 30px;
+      }
 
-    .logout-section {
-      text-align: center;
-      margin-top: 30px;
-    }
+      .logout-btn {
+        background: #dc3545;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
 
-    .logout-btn {
-      background: #dc3545;
-      color: white;
-      padding: 12px 30px;
-      border: none;
-      border-radius: 25px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
+      .logout-btn:hover {
+        background: #c82333;
+        text-decoration: none;
+        color: white;
+      }
+    </style>
+  </head>
 
-    .logout-btn:hover {
-      background: #c82333;
-      text-decoration: none;
-      color: white;
-    }
-  </style>
-</head>
+  <body>
+    {% include 'usuarios/header.html' %}
 
-<body>
-  {% include 'usuarios/header.html' %}
+    <div class="user-dashboard">
+      <div class="welcome-section">
+        <h1>¡Bienvenido, {{ user.first_name|default:user.username }}!</h1>
+        <p>Gestiona tu cuenta y explora nuestros productos</p>
+      </div>
 
-  <div class="user-dashboard">
-    <div class="welcome-section">
-      <h1>¡Bienvenido, {{ user.first_name|default:user.username }}!</h1>
-      <p>Gestiona tu cuenta y explora nuestros productos</p>
-    </div>
+      <div class="options-grid">
+        <a href="{% url 'prendas:listar_como_usuario' %}" class="option-card">
+          <i class="fas fa-shopping-bag"></i>
+          <h3>Ver Catálogo</h3>
+          <p>Explora nuestra colección de prendas y encuentra lo que buscas</p>
+        </a>
 
-    <div class="options-grid">
-      <a href="{% url 'prendas:listar_como_usuario' %}" class="option-card">
-        <i class="fas fa-shopping-bag"></i>
-        <h3>Ver Catálogo</h3>
-        <p>Explora nuestra colección de prendas y encuentra lo que buscas</p>
-      </a>
+        <a href="{% url 'prendas:ver_carrito' %}" class="option-card">
+          <i class="fas fa-shopping-cart"></i>
+          <h3>Mi Carrito</h3>
+          <p>
+            Revisa los productos que has seleccionado y procede con tu compra
+          </p>
+        </a>
 
-      <a href="{% url 'prendas:ver_carrito' %}" class="option-card">
-        <i class="fas fa-shopping-cart"></i>
-        <h3>Mi Carrito</h3>
-        <p>Revisa los productos que has seleccionado y procede con tu compra</p>
-      </a>
+        <a href="{% url 'historial:mi_historial' %}" class="option-card">
+          <i class="fas fa-history"></i>
+          <h3>Historial de Compras</h3>
+          <p>Consulta todas tus compras anteriores y su estado</p>
+        </a>
+      </div>
 
-      <a href="{% url 'historial:mi_historial' %}" class="option-card">
-        <i class="fas fa-history"></i>
-        <h3>Historial de Compras</h3>
-        <p>Consulta todas tus compras anteriores y su estado</p>
-      </a>
-
-      <a href="#" class="option-card">
-        <i class="fas fa-user-edit"></i>
-        <h3>Mi Perfil</h3>
-        <p>Actualiza tu información personal y preferencias</p>
-      </a>
-    </div>
-
-    <div class="stats-section">
-      <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Resumen de Actividad</h3>
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-number">{{ historial_count|default:0 }}</div>
-          <div class="stat-label">Compras Realizadas</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">{{ carrito_count|default:0 }}</div>
-          <div class="stat-label">Productos en Carrito</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">${{ total_gastado|default:0|floatformat:0 }}</div>
-          <div class="stat-label">Total Gastado</div>
+      <div class="stats-section">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333">
+          Resumen de Actividad
+        </h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{{ historial_count|default:0 }}</div>
+            <div class="stat-label">Compras Realizadas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ carrito_count|default:0 }}</div>
+            <div class="stat-label">Productos en Carrito</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">
+              ${{ total_gastado|default:0|floatformat:0 }}
+            </div>
+            <div class="stat-label">Total Gastado</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="logout-section">
-      <a href="{% url 'usuarios:logout' %}" class="logout-btn">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </a>
+      <div class="logout-section">
+        <a href="{% url 'usuarios:logout' %}" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+      </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>
