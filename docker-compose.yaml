@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: django_app
+    ports:
+      - "8000:8000"
     volumes:
       # Volumen con nombre para persistencia garantizada de archivos media
       - media_volume:/app/media
@@ -14,14 +16,24 @@ services:
       DJANGO_SETTINGS_MODULE: proyecto_django.settings.local
       DEBUG: "False"
     restart: unless-stopped
-    command: >
+    entrypoint: |
       sh -c "
+      # Crear directorio de base de datos si no existe
+      mkdir -p /app/database
       # Copiar la base de datos existente al volumen si no existe
-      if [ ! -f /app/database/db.sqlite3 ]; then cp /app/proyecto_django/db.sqlite3 /app/database/db.sqlite3; fi;
+      if [ ! -f /app/database/db.sqlite3 ] && [ -f /app/proyecto_django/db.sqlite3 ]; then
+        cp /app/proyecto_django/db.sqlite3 /app/database/db.sqlite3
+      fi
+      # Remover archivo existente si no es un enlace simbólico
+      if [ -f /app/proyecto_django/db.sqlite3 ] && [ ! -L /app/proyecto_django/db.sqlite3 ]; then
+        rm /app/proyecto_django/db.sqlite3
+      fi
       # Crear enlace simbólico a la ubicación esperada
-      ln -sf /app/database/db.sqlite3 /app/proyecto_django/db.sqlite3;
-      # Ejecutar el servidor
-      exec uv run python proyecto_django/manage.py runserver 0.0.0.0:8000
+      if [ ! -L /app/proyecto_django/db.sqlite3 ]; then
+        ln -sf /app/database/db.sqlite3 /app/proyecto_django/db.sqlite3
+      fi
+      # Iniciar servidor
+      exec uv run proyecto_django/manage.py runserver 0.0.0.0:8000
       "
 volumes:
   media_volume:
