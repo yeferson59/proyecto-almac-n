@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: django_app
+    ports:
+      - "8000:8000"
     volumes:
       # Monta la carpeta local de media en el contenedor para persistencia de archivos subidos
       - ./proyecto_django/media:/app/media
@@ -12,5 +14,5 @@ services:
     environment:
       # Configuración para Django
       DJANGO_SETTINGS_MODULE: proyecto_django.settings.local
-      DEBUG: "False"
+      DEBUG: "True"
     restart: unless-stopped
