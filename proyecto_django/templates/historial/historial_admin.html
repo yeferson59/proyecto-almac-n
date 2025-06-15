@@ -1,348 +1,370 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Stock Mania - Historial de Ventas (Admin)</title>
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/static/css/principal.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Stock Mania - Historial de Ventas (Admin)</title>
-  <!-- Font Awesome CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="/static/css/principal.css">
-</head>
+  <body>
+    {% include "usuarios/header.html" %}
+    <style>
+      body {
+        background: linear-gradient(135deg, #f2e9e4 0%, #e8ddd4 100%);
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-<body>
-  {% include "usuarios/header.html" %}
-  <style>
-    body {
-      background: linear-gradient(135deg, #f2e9e4 0%, #e8ddd4 100%);
-      min-height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .admin-container {
-      max-width: 1200px;
-      margin: 3rem auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(34, 34, 59, 0.12);
-      backdrop-filter: blur(10px);
-      padding: 2.5rem;
-    }
-
-    .admin-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .admin-titulo {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #23223b;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
-    }
-
-    .estadisticas {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .estadistica-card {
-      background: linear-gradient(135deg, #4a4e69 0%, #23223b 100%);
-      color: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .estadistica-numero {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .estadistica-label {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .filtros {
-      background: rgba(242, 233, 228, 0.6);
-      padding: 1.5rem;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-    }
-
-    .filtros-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      align-items: end;
-    }
-
-    .filtro-grupo {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .filtro-label {
-      font-weight: 600;
-      color: #23223b;
-      margin-bottom: 0.5rem;
-    }
-
-    .filtro-input {
-      padding: 0.7rem;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-
-    .filtro-input:focus {
-      outline: none;
-      border-color: #4a4e69;
-    }
-
-    .btn-filtrar {
-      background: #4a4e69;
-      color: white;
-      border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-
-    .btn-filtrar:hover {
-      background: #23223b;
-    }
-
-    .ventas-tabla {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 2rem;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(34, 34, 59, 0.08);
-    }
-
-    .ventas-tabla th {
-      background: #4a4e69;
-      color: white;
-      padding: 1rem;
-      text-align: left;
-      font-weight: 600;
-    }
-
-    .ventas-tabla td {
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
-    }
-
-    .ventas-tabla tr:hover {
-      background: rgba(242, 233, 228, 0.3);
-    }
-
-    .usuario-info {
-      font-weight: 600;
-      color: #23223b;
-    }
-
-    .prenda-info {
-      color: #4a4e69;
-    }
-
-    .precio-cell {
-      font-weight: 700;
-      color: #28a745;
-    }
-
-    .fecha-cell {
-      color: #4a4e69;
-      font-size: 0.9rem;
-    }
-
-    .paginacion {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 2rem;
-    }
-
-    .pag-btn,
-    .pag-num {
-      padding: 0.5rem 1rem;
-      border: 2px solid #4a4e69;
-      background: transparent;
-      color: #4a4e69;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-
-    .pag-btn:hover,
-    .pag-num:hover {
-      background: #4a4e69;
-      color: white;
-    }
-
-    .pag-num.active {
-      background: #4a4e69;
-      color: white;
-    }
-
-    .sin-ventas {
-      text-align: center;
-      padding: 3rem;
-      color: #4a4e69;
-    }
-
-    .sin-ventas i {
-      font-size: 4rem;
-      color: #ddd;
-      margin-bottom: 1rem;
-    }
-
-    @media (max-width: 768px) {
       .admin-container {
-        margin: 2rem 1rem;
+        max-width: 1200px;
+        margin: 3rem auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(34, 34, 59, 0.12);
+        backdrop-filter: blur(10px);
+        padding: 2.5rem;
+      }
+
+      .admin-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .admin-titulo {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #23223b;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+      }
+
+      .estadisticas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .estadistica-card {
+        background: linear-gradient(135deg, #4a4e69 0%, #23223b 100%);
+        color: white;
         padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
       }
 
-      .ventas-tabla {
+      .estadistica-numero {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .estadistica-label {
         font-size: 0.9rem;
+        opacity: 0.9;
       }
 
-      .ventas-tabla th,
-      .ventas-tabla td {
-        padding: 0.7rem 0.5rem;
+      .filtros {
+        background: rgba(242, 233, 228, 0.6);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
       }
 
       .filtros-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        align-items: end;
       }
-    }
-  </style>
 
-  <div class="admin-container">
-    <div class="admin-header">
-      <h1 class="admin-titulo">
+      .filtro-grupo {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .filtro-label {
+        font-weight: 600;
+        color: #23223b;
+        margin-bottom: 0.5rem;
+      }
+
+      .filtro-input {
+        padding: 0.7rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+      }
+
+      .filtro-input:focus {
+        outline: none;
+        border-color: #4a4e69;
+      }
+
+      .btn-filtrar {
+        background: #4a4e69;
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn-filtrar:hover {
+        background: #23223b;
+      }
+
+      .ventas-tabla {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(34, 34, 59, 0.08);
+      }
+
+      .ventas-tabla th {
+        background: #4a4e69;
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .ventas-tabla td {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .ventas-tabla tr:hover {
+        background: rgba(242, 233, 228, 0.3);
+      }
+
+      .usuario-info {
+        font-weight: 600;
+        color: #23223b;
+      }
+
+      .prenda-info {
+        color: #4a4e69;
+      }
+
+      .precio-cell {
+        font-weight: 700;
+        color: #28a745;
+      }
+
+      .fecha-cell {
+        color: #4a4e69;
+        font-size: 0.9rem;
+      }
+
+      .paginacion {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+      }
+
+      .pag-btn,
+      .pag-num {
+        padding: 0.5rem 1rem;
+        border: 2px solid #4a4e69;
+        background: transparent;
+        color: #4a4e69;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+
+      .pag-btn:hover,
+      .pag-num:hover {
+        background: #4a4e69;
+        color: white;
+      }
+
+      .pag-num.active {
+        background: #4a4e69;
+        color: white;
+      }
+
+      .sin-ventas {
+        text-align: center;
+        padding: 3rem;
+        color: #4a4e69;
+      }
+
+      .sin-ventas i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .admin-container {
+          margin: 2rem 1rem;
+          padding: 1.5rem;
+        }
+
+        .ventas-tabla {
+          font-size: 0.9rem;
+        }
+
+        .ventas-tabla th,
+        .ventas-tabla td {
+          padding: 0.7rem 0.5rem;
+        }
+
+        .filtros-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+
+    <div class="admin-container">
+      <div class="admin-header">
+        <h1 class="admin-titulo">
+          <i class="fa-solid fa-chart-line"></i>
+          Historial de Ventas - Panel Admin
+        </h1>
+      </div>
+
+      <div class="estadisticas">
+        <div class="estadistica-card">
+          <div class="estadistica-numero">{{ total_ventas }}</div>
+          <div class="estadistica-label">Total Ventas</div>
+        </div>
+        <div class="estadistica-card">
+          <div class="estadistica-numero">
+            ${{ total_ingresos|floatformat:2 }}
+          </div>
+          <div class="estadistica-label">Ingresos Totales</div>
+        </div>
+      </div>
+
+      <form method="get" class="filtros">
+        <div class="filtros-grid">
+          <div class="filtro-grupo">
+            <label class="filtro-label">Buscar Usuario:</label>
+            <input
+              type="text"
+              name="usuario"
+              value="{{ usuario_buscar }}"
+              placeholder="Nombre de usuario..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-grupo">
+            <label class="filtro-label">Buscar Prenda:</label>
+            <input
+              type="text"
+              name="prenda"
+              value="{{ prenda_buscar }}"
+              placeholder="Nombre de prenda..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-grupo">
+            <button type="submit" class="btn-filtrar">
+              <i class="fa-solid fa-search"></i> Filtrar
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {% if historial %}
+      <table class="ventas-tabla">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Prenda</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for venta in historial %}
+          <tr>
+            <td class="fecha-cell">
+              {{ venta.fecha_compra|date:"d/m/Y H:i" }}
+            </td>
+            <td class="usuario-info">
+              <a
+                href="{% url 'historial:historial_usuario_admin' venta.usuario.id %}"
+                style="color: #23223b; text-decoration: underline"
+              >
+                {{ venta.usuario.username }}
+              </a>
+              {% if venta.usuario.first_name %}
+              <br /><small
+                >({{ venta.usuario.first_name }} {{ venta.usuario.last_name }})</small
+              >
+              {% endif %}
+            </td>
+            <td class="prenda-info">
+              <strong>{{ venta.prenda.nombre_prenda }}</strong><br />
+              <small
+                >{{ venta.prenda.color_prenda }} • {{ venta.prenda.talla_prenda }} • {{ venta.prenda.categoria_prenda }}</small
+              >
+            </td>
+            <td>{{ venta.cantidad }}</td>
+            <td class="precio-cell">${{ venta.total_pago }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if is_paginated %}
+      <div class="paginacion">
+        {% if page_obj.has_previous %}
+        <a
+          href="?page={{ page_obj.previous_page_number }}&usuario={{ usuario_buscar }}&prenda={{ prenda_buscar }}"
+          class="pag-btn"
+        >
+          <i class="fa-solid fa-chevron-left"></i> Anterior
+        </a>
+        {% endif %} {% for num in page_obj.paginator.page_range %}
+        <a
+          href="?page={{ num }}&usuario={{ usuario_buscar }}&prenda={{ prenda_buscar }}"
+          class="pag-num {% if page_obj.number == num %}active{% endif %}"
+        >
+          {{ num }}
+        </a>
+        {% endfor %} {% if page_obj.has_next %}
+        <a
+          href="?page={{ page_obj.next_page_number }}&usuario={{ usuario_buscar }}&prenda={{ prenda_buscar }}"
+          class="pag-btn"
+        >
+          Siguiente <i class="fa-solid fa-chevron-right"></i>
+        </a>
+        {% endif %}
+      </div>
+      {% endif %} {% else %}
+      <div class="sin-ventas">
         <i class="fa-solid fa-chart-line"></i>
-        Historial de Ventas - Panel Admin
-      </h1>
-    </div>
-
-    <div class="estadisticas">
-      <div class="estadistica-card">
-        <div class="estadistica-numero">{{ total_ventas }}</div>
-        <div class="estadistica-label">Total Ventas</div>
+        <h3>No se encontraron ventas</h3>
+        <p>
+          {% if usuario_buscar or prenda_buscar %}No hay resultados para los
+          filtros aplicados{% else %}Aún no se han realizado ventas{% endif %}
+        </p>
       </div>
-      <div class="estadistica-card">
-        <div class="estadistica-numero">${{ total_ingresos|floatformat:2 }}</div>
-        <div class="estadistica-label">Ingresos Totales</div>
-      </div>
-    </div>
-
-    <form method="get" class="filtros">
-      <div class="filtros-grid">
-        <div class="filtro-grupo">
-          <label class="filtro-label">Buscar Usuario:</label>
-          <input type="text" name="usuario" value="{{ usuario_buscar }}" placeholder="Nombre de usuario..."
-            class="filtro-input">
-        </div>
-        <div class="filtro-grupo">
-          <label class="filtro-label">Buscar Prenda:</label>
-          <input type="text" name="prenda" value="{{ prenda_buscar }}" placeholder="Nombre de prenda..."
-            class="filtro-input">
-        </div>
-        <div class="filtro-grupo">
-          <button type="submit" class="btn-filtrar">
-            <i class="fa-solid fa-search"></i> Filtrar
-          </button>
-        </div>
-      </div>
-    </form>
-
-    {% if historial %}
-    <table class="ventas-tabla">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Usuario</th>
-          <th>Prenda</th>
-          <th>Cantidad</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for venta in historial %}
-        <tr>
-          <td class="fecha-cell">
-            {{ venta.fecha_compra|date:"d/m/Y H:i" }}
-          </td>
-          <td class="usuario-info">
-            <a href="{% url 'historial:historial_usuario_admin' venta.usuario.id %}"
-              style="color:#23223b;text-decoration:underline;">
-              {{ venta.usuario.username }}
-            </a>
-            {% if venta.usuario.first_name %}
-            <br><small>({{ venta.usuario.first_name }} {{ venta.usuario.last_name }})</small>
-            {% endif %}
-          </td>
-          <td class="prenda-info">
-            <strong>{{ venta.prenda.nombre_prenda }}</strong><br>
-            <small>{{ venta.prenda.color_prenda }} • {{ venta.prenda.talla_prenda }} • {{ venta.prenda.categoria_prenda }}</small>
-          </td>
-          <td>{{ venta.cantidad }}</td>
-          <td class="precio-cell">${{ venta.total_pago }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    {% if is_paginated %}
-    <div class="paginacion">
-      {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}&usuario={{ usuario_buscar }}&prenda={{ prenda_buscar }}"
-        class="pag-btn">
-        <i class="fa-solid fa-chevron-left"></i> Anterior
-      </a>
-      {% endif %}
-
-      {% for num in page_obj.paginator.page_range %}
-      <a href="?page={{ num }}&usuario={{ usuario_buscar }}&prenda={{ prenda_buscar }}"
-        class="pag-num {% if page_obj.number == num %}active{% endif %}">
-        {{ num }}
-      </a>
-      {% endfor %}
-
-      {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}&usuario={{ usuario_buscar }}&prenda={{ prenda_buscar }}"
-        class="pag-btn">
-        Siguiente <i class="fa-solid fa-chevron-right"></i>
-      </a>
       {% endif %}
     </div>
-    {% endif %}
-
-    {% else %}
-    <div class="sin-ventas">
-      <i class="fa-solid fa-chart-line"></i>
-      <h3>No se encontraron ventas</h3>
-      <p>{% if usuario_buscar or prenda_buscar %}No hay resultados para los filtros aplicados{% else %}Aún no se han
-        realizado ventas{% endif %}</p>
-    </div>
-    {% endif %}
-  </div>
-</body>
-
+  </body>
 </html>
