@@ -25,6 +25,3 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/app/media'
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
