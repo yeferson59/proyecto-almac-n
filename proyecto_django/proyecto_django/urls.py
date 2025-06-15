@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from two_factor.urls import urlpatterns as tf_urls
-from .settings.local import *
 from django.conf.urls import handler404
 from . import views
 from django.conf.urls.static import static
+from django.conf import settings
+
 
 
 urlpatterns = [
@@ -31,9 +32,9 @@ urlpatterns = [
     re_path('historial/', include(('applications.historial.urls', 'historial'), namespace='historial')),
 ]
 
-from django.conf import settings
-
-if settings.DEBUG or True:  # Forzar servir media en Docker/desarrollo
+# Servir archivos media y static en desarrollo
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'proyecto_django.views.mi_vista_404'
