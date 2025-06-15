@@ -1,80 +1,170 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stock Mania - Panel Administrador</title>
-  <link rel="stylesheet" href="{% static 'css/menu_usuarios.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    .admin-dashboard { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .welcome-section { background: linear-gradient(135deg, #23223b 0%, #4a4e69 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px; text-align: center; }
-    .welcome-section h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 300; }
-    .welcome-section p { font-size: 1.2rem; opacity: 0.9; }
-    .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
-    .option-card { background: white; border-radius: 15px; padding: 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s; text-decoration: none; color: inherit; }
-    .option-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); text-decoration: none; color: inherit; }
-    .option-card i { font-size: 3rem; margin-bottom: 20px; color: #4a4e69; }
-    .option-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #333; }
-    .option-card p { color: #666; line-height: 1.6; }
-    .stats-section { background: #f8f9fa; padding: 30px; border-radius: 15px; margin-bottom: 20px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-    .stat-item { text-align: center; padding: 20px; background: white; border-radius: 10px; }
-    .stat-number { font-size: 2rem; font-weight: bold; color: #4a4e69; margin-bottom: 5px; }
-    .stat-label { color: #666; font-size: 0.9rem; }
-    .logout-section { text-align: center; margin-top: 30px; }
-    .logout-btn { background: #dc3545; color: white; padding: 12px 30px; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer; transition: background 0.3s; text-decoration: none; display: inline-block; }
-    .logout-btn:hover { background: #c82333; text-decoration: none; color: white; }
-  </style>
-</head>
-<body>
-  {% include 'usuarios/header.html' %}
-  <div class="admin-dashboard">
-    <div class="welcome-section">
-      <h1>¡Bienvenido, {{ user.first_name|default:user.username }}!</h1>
-      <p>Panel de administración y gestión de Stock Mania</p>
-    </div>
-    <div class="options-grid">
-      <a href="{% url 'prendas:listar_prendas' %}" class="option-card">
-        <i class="fas fa-boxes-stacked"></i>
-        <h3>Administrar Productos</h3>
-        <p>Gestiona el inventario, crea, edita o elimina prendas</p>
-      </a>
-      <a href="{% url 'historial:historial_admin' %}" class="option-card">
-        <i class="fas fa-chart-line"></i>
-        <h3>Historial de Ventas</h3>
-        <p>Consulta todas las compras realizadas por los usuarios</p>
-      </a>
-      <a href="{% url 'usuarios:gestion_usuarios' %}" class="option-card">
-        <i class="fas fa-users"></i>
-        <h3>Gestión de Usuarios</h3>
-        <p>Visualiza y administra los usuarios registrados</p>
-      </a>
-      <a href="#" class="option-card">
-        <i class="fas fa-cogs"></i>
-        <h3>Configuración</h3>
-        <p>Ajusta parámetros avanzados del sistema</p>
-      </a>
-    </div>
-    <div class="stats-section">
-      <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Resumen de Actividad</h3>
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-number">{{ historial_count|default:0 }}</div>
-          <div class="stat-label">Ventas Registradas</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">${{ total_gastado|default:0|floatformat:0 }}</div>
-          <div class="stat-label">Ingresos Totales</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Mania - Panel Administrador</title>
+    <link rel="stylesheet" href="{% static 'css/menu_usuarios.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      .admin-dashboard {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .welcome-section {
+        background: linear-gradient(135deg, #23223b 0%, #4a4e69 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .welcome-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
+      .welcome-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+      }
+      .option-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+        text-decoration: none;
+        color: inherit;
+      }
+      .option-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+        color: inherit;
+      }
+      .option-card i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #4a4e69;
+      }
+      .option-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #333;
+      }
+      .option-card p {
+        color: #666;
+        line-height: 1.6;
+      }
+      .stats-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      .stat-item {
+        text-align: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+      }
+      .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #4a4e69;
+        margin-bottom: 5px;
+      }
+      .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+      }
+      .logout-section {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .logout-btn {
+        background: #dc3545;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .logout-btn:hover {
+        background: #c82333;
+        text-decoration: none;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'usuarios/header.html' %}
+    <div class="admin-dashboard">
+      <div class="welcome-section">
+        <h1>¡Bienvenido, {{ user.first_name|default:user.username }}!</h1>
+        <p>Panel de administración y gestión de Stock Mania</p>
+      </div>
+      <div class="options-grid">
+        <a href="{% url 'prendas:listar_prendas' %}" class="option-card">
+          <i class="fas fa-boxes-stacked"></i>
+          <h3>Administrar Productos</h3>
+          <p>Gestiona el inventario, crea, edita o elimina prendas</p>
+        </a>
+        <a href="{% url 'historial:historial_admin' %}" class="option-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Historial de Ventas</h3>
+          <p>Consulta todas las compras realizadas por los usuarios</p>
+        </a>
+        <a href="{% url 'usuarios:gestion_usuarios' %}" class="option-card">
+          <i class="fas fa-users"></i>
+          <h3>Gestión de Usuarios</h3>
+          <p>Visualiza y administra los usuarios registrados</p>
+        </a>
+      </div>
+      <div class="stats-section">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333">
+          Resumen de Actividad
+        </h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{{ historial_count|default:0 }}</div>
+            <div class="stat-label">Ventas Registradas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">
+              ${{ total_gastado|default:0|floatformat:0 }}
+            </div>
+            <div class="stat-label">Ingresos Totales</div>
+          </div>
         </div>
       </div>
+      <div class="logout-section">
+        <a href="{% url 'usuarios:logout' %}" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+      </div>
     </div>
-    <div class="logout-section">
-      <a href="{% url 'usuarios:logout' %}" class="logout-btn">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </a>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
