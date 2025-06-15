@@ -1,0 +1,15 @@
+[project]
+name = "experimento"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "django>=5.2.3",
+  "django-two-factor-auth>=1.17.0",
+  "gunicorn>=23.0.0",
+  "phonenumbers>=9.0.7",
+  "pillow>=11.2.1",
+  "pyotp>=2.9.0",
+  "whitenoise>=6.9.0",
+]

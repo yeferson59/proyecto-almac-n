@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" c .producto-nombre { font-size: 1.1rem; font-weight: 600; color: #23223b; margin: 0.8rem 0
+    0.5rem 0; } .producto-precio { font-size: 1.4rem; font-weight: 700; color: #28a745; margin: 0.3rem 0 0.8rem 0; }
+    .producto-detalle { color: #4a4e69; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.4; }=device-width,
+    initial-scale=1.0">
+  <title>Stock Mania - Catálogo</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  {% include "usuarios/header.html" %}
+
+  <style>
+    /* Estilos específicos para el contenido - aplicados después del header */
+    body {
+      background: linear-gradient(135deg, #f2e9e4 0%, #e8ddd4 100%);
+      min-height: 100vh;
+    }
+
+    .catalogo-container,
+    .catalogo-container * {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .alert-mensaje {
+      background: #eafaf1;
+      color: #1b5e20;
+      border: 1px solid #b2dfdb;
+      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      margin: 1rem auto 1.5rem auto;
+      max-width: 500px;
+      text-align: center;
+      font-size: 1.05rem;
+    }
+
+    .catalogo-container {
+      max-width: 1200px;
+      margin: 2.5rem auto;
+      padding: 0 2rem;
+    }
+
+    .catalogo-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .catalogo-titulo {
+      font-size: 2rem;
+      color: #23223b;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .catalogo-titulo i {
+      color: #4a4e69;
+      font-size: 2.2rem;
+    }
+
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .producto {
+      background: rgba(242, 233, 228, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(34, 34, 59, 0.08);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .producto:hover {
+      transform: translateY(-2px);
+    }
+
+    .producto img {
+      width: 180px;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      background: #eee;
+    }
+
+    .producto-nombre {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #23223b;
+      margin: 0.5rem 0;
+    }
+
+    .producto-detalle {
+      color: #4a4e69;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-ver,
+    .btn-anadir {
+      padding: 0.6rem 1.2rem;
+      background: #4a4e69;
+      color: #fff;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-ver:hover,
+    .btn-anadir:hover {
+      background: #23223b;
+    }
+
+    .no-productos {
+      text-align: center;
+      color: #888;
+      font-size: 1.1rem;
+      margin: 2rem 0;
+      grid-column: 1 / -1;
+    }
+
+    .paginacion {
+      background: rgba(242, 233, 228, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(34, 34, 59, 0.08);
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .paginacion .pag-btn,
+    .paginacion .pag-num {
+      background: #4a4e69;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      margin: 0 0.3rem;
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+
+    .paginacion .pag-btn:hover,
+    .paginacion .pag-num:hover {
+      background: #23223b;
+    }
+
+    .paginacion .pag-num.active {
+      background: #23223b;
+    }
+
+    @media (max-width: 768px) {
+      .catalogo {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .catalogo-container {
+        padding: 0 1rem;
+      }
+
+      .acciones {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+    }
+  </style>
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert-mensaje">
+    <i class="fa-solid fa-check-circle"></i> {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <div class="catalogo-container">
+    <div class="catalogo-header">
+      <h1 class="catalogo-titulo">
+        <i class="fa-solid fa-store"></i>
+        Nuestro Catálogo
+      </h1>
+    </div>
+
+    <div class="catalogo">
+      {% for prenda in prendas %}
+      <div class="producto">
+        {% if prenda.imagen %}
+        <img src="{{ prenda.imagen.url }}" alt="{{ prenda.nombre_prenda }}" />
+        {% else %}
+        <img src="https://via.placeholder.com/180x240/eee/999?text=Sin+Imagen" alt="Imagen no disponible" />
+        {% endif %}
+
+        <div class="producto-nombre">{{ prenda.nombre_prenda }}</div>
+        <div class="producto-precio">${{ prenda.precio }}</div>
+        <div class="producto-detalle">
+          <strong>Categoría:</strong> {{ prenda.categoria_prenda }}<br>
+          {% if prenda.stock > 0 %}
+          <strong>Stock:</strong> <span style="color: #28a745;">{{ prenda.stock }} disponibles</span>
+          {% else %}
+          <strong>Stock:</strong> <span style="color: #dc3545;">Agotado</span>
+          {% endif %}
+        </div>
+
+        <div class="acciones">
+          <a href="{% url 'prendas:detalle_prenda' prenda.id %}" class="btn-ver">
+            <i class="fa-solid fa-eye"></i> Ver
+          </a>
+
+          {% if request.user.is_authenticated %}
+          {% if prenda.stock > 0 %}
+          <form action="{% url 'prendas:agregar_al_carrito' prenda.id %}" method="post" style="display: inline">
+            {% csrf_token %}
+            <button type="submit" class="btn-anadir">
+              <i class="fa-solid fa-cart-plus"></i> Añadir
+            </button>
+          </form>
+          {% else %}
+          <button class="btn-anadir" disabled style="background: #6c757d; cursor: not-allowed;">
+            <i class="fa-solid fa-ban"></i> Sin Stock
+          </button>
+          {% endif %}
+          {% else %}
+          <a href="{% url 'usuarios:login' %}?next={% url 'prendas:listar_como_usuario' %}" class="btn-anadir">
+            <i class="fa-solid fa-cart-plus"></i> Añadir
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="no-productos">
+        <i class="fa-regular fa-face-frown"></i> No hay prendas disponibles en este momento.
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if prendas.paginator.num_pages > 1 %}
+    <div class="paginacion">
+      {% if prendas.has_previous %}
+      <a href="?page={{ prendas.previous_page_number }}" class="pag-btn">
+        <i class="fa-solid fa-chevron-left"></i> Anterior
+      </a>
+      {% endif %}
+
+      {% for num in prendas.paginator.page_range %}
+      <a href="?page={{ num }}" class="pag-num {% if prendas.number == num %}active{% endif %}">
+        {{ num }}
+      </a>
+      {% endfor %}
+
+      {% if prendas.has_next %}
+      <a href="?page={{ prendas.next_page_number }}" class="pag-btn">
+        Siguiente <i class="fa-solid fa-chevron-right"></i>
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</body>
+
+</html>

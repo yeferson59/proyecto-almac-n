@@ -1,0 +1,90 @@
+/* Reset y estilo base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor principal con imagen de fondo */
+.login-container {
+  background: url('/static/img/login.jpg');
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Caja del formulario (más pequeña y elegante) */
+.login-box {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 25px 30px;
+  border-radius: 10px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.login-box h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #000;
+}
+
+/* Etiquetas del formulario */
+.login-box label {
+  display: block;
+  text-align: left;
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+/* Inputs */
+.login-box input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Botón de enviar */
+.login-box button {
+  width: 100%;
+  padding: 9px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 12px;
+  font-size: 0.9em;
+}
+
+/* Enlace de registro */
+.login-box .register-link {
+  margin-top: 12px;
+  font-size: 0.85em;
+  color: #000;
+}
+
+.login-box .register-link a {
+  color: #2a00ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Mensajes (por ejemplo, de error o información) */
+.messages p {
+  color: red;
+  font-size: 0.85em;
+  margin-top: 8px;
+}

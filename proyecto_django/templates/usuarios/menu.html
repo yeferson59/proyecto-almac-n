@@ -1,0 +1,9 @@
+{% if request.user.is_authenticated %}
+<h2>Bienvenido, {{ request.user.username }}</h2>
+<p>Correo: {{ request.user.email }}</p>
+<p>Rol: {{ request.user.rol }}</p>
+<a href="{% url 'usuarios:logout' %}">Cerrar sesión</a>
+{% else %}
+<p>No has iniciado sesión.</p>
+<a href="{% url 'usuarios:login' %}">Ir al login</a>
+{% endif %}

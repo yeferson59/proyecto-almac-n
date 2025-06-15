@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Autenticación 2FA</title>
+    <link rel="stylesheet" href="/static/css/mostrar.css">
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="qr-panel">
+        <h2>Escanea este código con<br><span>Google Authenticator</span></h2>
+
+        <div class="qr-box">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="Código QR">
+        </div>
+
+        <p class="info">Luego, ingresa el código que ves en la app cuando inicies sesión.</p>
+        <a class="menu-link" href="{% url 'usuarios:login' %}">Ir al menú</a>
+    </div>
+</body>
+
+</html>

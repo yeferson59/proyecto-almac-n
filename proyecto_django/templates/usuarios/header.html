@@ -1,0 +1,335 @@
+<!-- Header adaptable para Stock Mania -->
+<!-- Font Awesome CDN - versión consistente -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+<header class="main-header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a href="{% url 'usuarios:principal' %}" class="site-title">
+        <span class="logo-icon" aria-label="Stock Mania">🛒</span>
+        Stock Mania
+      </a>
+    </div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+    </label>
+    <ul class="navbar-links">
+      <li><a href="{% url 'usuarios:principal' %}">Inicio</a></li>
+      {% if request.user.is_authenticated %}
+      <!-- Enlace diferente según el tipo de usuario -->
+      {% if request.user.rol == 'admin' or request.user.is_staff %}
+      <li><a href="{% url 'prendas:listar_prendas' %}">Gestionar Prendas</a></li>
+      {% else %}
+      <li><a href="{% url 'prendas:listar_como_usuario' %}">Catálogo</a></li>
+      {% endif %}
+      <li>
+        <a href="{% url 'prendas:ver_carrito' %}" class="icon-link">
+          <span class="icon-carrito">
+            <i class="fa-solid fa-cart-shopping"></i>
+            {% with request.user.carrito.total_items as total_items %}
+            {% if total_items %}
+            <span class="carrito-badge">{{ total_items }}</span>
+            {% endif %} {% endwith %}
+          </span>
+          <span class="sr-only">Carrito</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'usuarios:menu' %}" class="icon-link" title="Menú de usuario">
+          <span class="icon-cuenta">
+            <i class="fa-solid fa-user-circle"></i>
+          </span>
+          <span class="sr-only">Cuenta</span>
+        </a>
+      </li>
+      <li><a href="{% url 'usuarios:logout' %}">Cerrar sesión</a></li>
+      {% else %}
+      <li><a href="{% url 'usuarios:login' %}">Iniciar sesión</a></li>
+      <li><a href="{% url 'usuarios:registro' %}">Registrarse</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  /* Header adaptable y coherente con principal.css */
+  .main-header {
+    width: 100vw;
+    left: 0;
+    background: rgba(242, 233, 228, 0.82);
+    /* blanco crema translúcido */
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-radius: 0 0 18px 18px;
+    box-shadow:
+      0 6px 32px 0 rgba(34, 34, 59, 0.1),
+      0 1.5px 0 0 #e0dedb;
+    border-bottom: 1.5px solid #e0dedb;
+    animation: header-fadein 0.7s cubic-bezier(0.4, 1.4, 0.6, 1) 1;
+  }
+
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.25rem;
+    color: #23223b;
+    transition: color 0.18s;
+  }
+
+  .icon-link:hover,
+  .icon-link:focus {
+    color: #4a4e69;
+  }
+
+  .icon-carrito {
+    position: relative;
+    display: inline-block;
+  }
+
+  .carrito-badge {
+    position: absolute;
+    top: -8px;
+    right: -13px;
+    background: #c9184a;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 7px;
+    min-width: 22px;
+    min-height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(34, 34, 59, 0.13);
+    border: 2px solid #fff;
+  }
+
+  .icon-cuenta {
+    font-size: 1.35rem;
+    margin-left: 2px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  @keyframes header-fadein {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .navbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.1rem 2.2rem 0.9rem 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background: transparent;
+  }
+
+  .site-title {
+    color: #23223b;
+    font-size: 2.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-shadow:
+      0 2px 8px rgba(255, 255, 255, 0.5),
+      0 1px 0 #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: color 0.25s;
+  }
+
+  .site-title:hover,
+  .site-title:focus {
+    color: #4a4e69;
+  }
+
+  .logo-icon {
+    font-size: 2.1rem;
+    vertical-align: middle;
+    filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.5));
+    transition: transform 0.2s;
+  }
+
+  .site-title:hover .logo-icon,
+  .site-title:focus .logo-icon {
+    transform: scale(1.08) rotate(-8deg);
+  }
+
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+
+  .navbar-links a {
+    color: #23223b;
+    text-decoration: none;
+    font-size: 1.08rem;
+    padding: 0.5rem 1.1rem 0.5rem 1.1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    position: relative;
+    background: none;
+    text-shadow:
+      0 2px 8px rgba(255, 255, 255, 0.7),
+      0 1px 0 #fff;
+    transition:
+      color 0.22s cubic-bezier(0.4, 1.4, 0.6, 1),
+      background 0.22s cubic-bezier(0.4, 1.4, 0.6, 1);
+    overflow: hidden;
+  }
+
+  .navbar-links a::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 0.32em;
+    height: 2.5px;
+    background: linear-gradient(90deg, #4a4e69 0%, #22223b 100%);
+    border-radius: 2px;
+    opacity: 0;
+    transform: scaleX(0.7);
+    transition:
+      opacity 0.22s,
+      transform 0.22s;
+  }
+
+  .navbar-links a:hover,
+  .navbar-links a:focus {
+    background: rgba(34, 34, 59, 0.08);
+    color: #4a4e69;
+    text-shadow:
+      0 2px 8px rgba(255, 255, 255, 0.7),
+      0 1px 0 #fff;
+  }
+
+  .navbar-links a:hover::after,
+  .navbar-links a:focus::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-toggle-label {
+    display: none;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .nav-toggle-label span,
+  .nav-toggle-label span::before,
+  .nav-toggle-label span::after {
+    display: block;
+    background: #4a4e69;
+    height: 3px;
+    width: 2rem;
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .nav-toggle-label span::before,
+  .nav-toggle-label span::after {
+    content: "";
+    position: absolute;
+  }
+
+  .nav-toggle-label span::before {
+    top: -8px;
+  }
+
+  .nav-toggle-label span::after {
+    top: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .navbar {
+      flex-wrap: wrap;
+      padding: 0.7rem 0.7rem 0.7rem 1.1rem;
+    }
+
+    .navbar-links {
+      flex-direction: column;
+      width: 100vw;
+      min-width: 0;
+      background: rgba(242, 233, 228, 0.95);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      gap: 0;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: 0 2px 8px rgba(34, 34, 59, 0.07);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      animation: header-fadein 0.6s cubic-bezier(0.4, 1.4, 0.6, 1) 1;
+    }
+
+    .navbar-links li {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+    }
+
+    .navbar-links a {
+      display: block;
+      width: 100%;
+      padding: 1.1rem 0;
+      border-radius: 0;
+      font-size: 1.13rem;
+    }
+
+    .nav-toggle-label {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-toggle:checked~.navbar-links {
+      display: flex;
+    }
+  }
+</style>

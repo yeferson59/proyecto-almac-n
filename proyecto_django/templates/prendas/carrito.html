@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Mania - Mi Carrito</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/css/principal.css">
+</head>
+
+<body>
+    <style>
+        .carrito-container {
+            max-width: 700px;
+            margin: 2.5rem auto;
+            background: rgba(242, 233, 228, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(34, 34, 59, 0.08);
+            padding: 2rem 2.5rem;
+        }
+
+        .carrito-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .carrito-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: #23223b;
+        }
+
+        .carrito-header .fa-cart-shopping {
+            color: #4a4e69;
+            font-size: 2.2rem;
+        }
+
+        .carrito-items {
+            margin-bottom: 2rem;
+        }
+
+        .carrito-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            border-bottom: 1px solid #e0dedb;
+            padding: 1rem 0;
+        }
+
+        .carrito-item:last-child {
+            border-bottom: none;
+        }
+
+        .carrito-item-img {
+            width: 70px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #eee;
+        }
+
+        .carrito-item-info {
+            flex: 1;
+        }
+
+        .carrito-item-nombre {
+            font-weight: bold;
+            color: #23223b;
+            font-size: 1.1rem;
+        }
+
+        .carrito-item-detalle {
+            color: #4a4e69;
+            font-size: 0.97rem;
+            margin: 0.2rem 0;
+        }
+
+        .carrito-item-precio {
+            color: #23223b;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-left: 1rem;
+        }
+
+        .carrito-acciones {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .carrito-item-cantidad {
+            font-size: 1.1rem;
+            color: #22223b;
+            margin-left: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .carrito-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #23223b;
+            margin-top: 1.5rem;
+        }
+
+        .carrito-vacio {
+            text-align: center;
+            color: #888;
+            font-size: 1.1rem;
+            margin: 2rem 0;
+        }
+
+        .btn-seguir {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.5rem;
+            background: #4a4e69;
+            color: #fff;
+            border-radius: 22px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-seguir:hover {
+            background: #23223b;
+        }
+
+        .btn-cantidad,
+        .btn-eliminar {
+            background: none;
+            border: none;
+            color: #4a4e69;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0 0.4rem;
+            transition: color 0.2s;
+        }
+
+        .btn-cantidad:hover,
+        .btn-eliminar:hover {
+            color: #c0392b;
+        }
+
+        .carrito-resumen {
+            background: rgba(242, 233, 228, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .carrito-total-precio {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #23223b;
+            margin-bottom: 1rem;
+        }
+
+        .botones-carrito {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .btn-comprar {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-comprar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-seguir {
+            background: transparent;
+            color: #4a4e69;
+            border: 2px solid #4a4e69;
+            border-radius: 25px;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-seguir:hover {
+            background: #4a4e69;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+    </head>
+
+    <body>
+        {% include "usuarios/header.html" %}
+        <div class="carrito-container">
+            <div class="carrito-header">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <h2>Mi Carrito</h2>
+            </div>
+            {% if items %}
+            <div class="carrito-items">
+                {% for item in items %}
+                <div class="carrito-item">
+                    {% if item.prenda.imagen %}
+                    <img src="{{ item.prenda.imagen.url }}" alt="{{ item.prenda.nombre_prenda }}"
+                        class="carrito-item-img">
+                    {% else %}
+                    <img src="https://via.placeholder.com/70x90?text=Prenda" alt="Sin imagen" class="carrito-item-img">
+                    {% endif %}
+                    <div class="carrito-item-info">
+                        <div class="carrito-item-nombre">{{ item.prenda.nombre_prenda }}</div>
+                        <div class="carrito-item-detalle">
+                            Color: {{ item.prenda.color_prenda }} |
+                            Talla: {{ item.prenda.talla_prenda }} |
+                            Categoría: {{ item.prenda.categoria_prenda }}
+                        </div>
+                        <div class="carrito-item-detalle">Precio unitario: ${{ item.prenda.precio }}</div>
+                    </div>
+                    <div class="carrito-item-precio">
+                        ${{ item.subtotal }}
+                    </div>
+                    <div class="carrito-acciones">
+                        <form action="{% url 'prendas:actualizar_cantidad_carrito' item.id 'restar' %}" method="post"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-cantidad" title="Restar uno"><i
+                                    class="fa-solid fa-minus"></i></button>
+                        </form>
+                        x{{ item.cantidad }}
+                        <form action="{% url 'prendas:actualizar_cantidad_carrito' item.id 'sumar' %}" method="post"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-cantidad" title="Sumar uno"><i
+                                    class="fa-solid fa-plus"></i></button>
+                        </form>
+                        <form action="{% url 'prendas:eliminar_del_carrito' item.id %}" method="post"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-eliminar" title="Eliminar"><i
+                                    class="fa-solid fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="carrito-resumen">
+                <div class="carrito-total-precio">
+                    Total: ${{ carrito.total_precio }}
+                </div>
+                <div>Total de productos: {{ carrito.total_items }}</div>
+            </div>
+            {% else %}
+            <div class="carrito-vacio">
+                <i class="fa-regular fa-face-frown"></i> Tu carrito está vacío.
+            </div>
+            {% endif %}
+
+            <div class="botones-carrito">
+                {% if items %}
+                <a href="{% url 'prendas:confirmar_compra' %}" class="btn-comprar">
+                    <i class="fa-solid fa-credit-card"></i> Proceder al Pago
+                </a>
+                {% endif %}
+                <a href="{% url 'prendas:listar_como_usuario' %}" class="btn-seguir">
+                    <i class="fa-solid fa-arrow-left"></i> Seguir comprando
+                </a>
+            </div>
+        </div>
+    </body>
+
+</html>

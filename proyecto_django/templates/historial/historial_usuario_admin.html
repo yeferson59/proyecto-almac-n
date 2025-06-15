@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Mania - Historial de {{ usuario_obj.username }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/static/css/principal.css">
+  <style>
+    body { background: linear-gradient(135deg, #f2e9e4 0%, #e8ddd4 100%); min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .historial-container { max-width: 1000px; margin: 3rem auto; background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 8px 32px rgba(34,34,59,0.12); backdrop-filter: blur(10px); padding: 2.5rem; }
+    .historial-header { text-align: center; margin-bottom: 2.5rem; }
+    .historial-titulo { font-size: 2.2rem; font-weight: 700; color: #23223b; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.8rem; }
+    .historial-subtitulo { color: #4a4e69; font-size: 1.1rem; }
+    .compra-item { background: rgba(242,233,228,0.6); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; }
+    .compra-item:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(34,34,59,0.10); }
+    .compra-detalles { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+    .compra-img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; background: #f5f5f5; }
+    .compra-info { flex: 1; }
+    .compra-nombre { font-weight: 700; color: #23223b; font-size: 1.1rem; }
+    .compra-meta { color: #4a4e69; font-size: 0.98rem; margin-bottom: 0.3rem; }
+    .compra-precio { font-weight: 700; color: #28a745; font-size: 1.1rem; }
+    .compra-fecha { color: #4a4e69; font-size: 0.95rem; }
+    .volver-link { display: inline-block; margin-top: 1.5rem; color: #4a4e69; text-decoration: none; font-weight: 600; font-size: 1rem; transition: color 0.2s; }
+    .volver-link:hover { color: #23223b; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  {% include "usuarios/header.html" %}
+  <div class="historial-container">
+    <div class="historial-header">
+      <h1 class="historial-titulo"><i class="fa-solid fa-user"></i> Historial de {{ usuario_obj.username }}</h1>
+      <p class="historial-subtitulo">Nombre: {{ usuario_obj.first_name }} {{ usuario_obj.last_name }} | Email: {{ usuario_obj.email }}</p>
+    </div>
+    {% if historial %}
+      {% for compra in historial %}
+      <div class="compra-item">
+        <div class="compra-detalles">
+          {% if compra.prenda.imagen %}
+            <img src="{{ compra.prenda.imagen.url }}" alt="{{ compra.prenda.nombre_prenda }}" class="compra-img">
+          {% else %}
+            <img src="{% static 'img/placeholder.png' %}" alt="Sin imagen" class="compra-img">
+          {% endif %}
+          <div class="compra-info">
+            <div class="compra-nombre">{{ compra.prenda.nombre_prenda }}</div>
+            <div class="compra-meta">{{ compra.prenda.color_prenda }} • {{ compra.prenda.talla_prenda }} • {{ compra.prenda.categoria_prenda }}</div>
+            <div class="compra-meta">Cantidad: {{ compra.cantidad }}</div>
+            <div class="compra-precio">Total: ${{ compra.total_pago }}</div>
+            <div class="compra-fecha">Fecha: {{ compra.fecha_compra|date:"d/m/Y H:i" }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="sin-ventas">
+        <i class="fa-solid fa-box-open"></i>
+        <h3>Este usuario no tiene compras registradas</h3>
+      </div>
+    {% endif %}
+    <a href="{% url 'historial:historial_admin' %}" class="volver-link"><i class="fa-solid fa-arrow-left"></i> Volver al historial admin</a>
+  </div>
+</body>
+</html>

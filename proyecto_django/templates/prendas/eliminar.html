@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmar Eliminación</title>
+  <link rel="stylesheet" href="/static/css/eliminar.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>¿Estás seguro de eliminar "{{ object }}"?</h2>
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'prendas:listar_prendas' %}" class="btn btn-cancel">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

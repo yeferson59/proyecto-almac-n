@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Usuarios - Admin</title>
+  <link rel="stylesheet" href="{% static 'css/menu_usuarios.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .usuarios-container { max-width: 1100px; margin: 3rem auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 16px rgba(34,34,59,0.10); padding: 2.5rem; }
+    .usuarios-header { text-align: center; margin-bottom: 2rem; }
+    .usuarios-header h1 { font-size: 2rem; font-weight: 700; color: #23223b; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { padding: 1rem; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #4a4e69; color: white; font-weight: 600; }
+    tr:hover { background: #f2e9e4; }
+    .acciones { display: flex; gap: 0.5rem; }
+    .acciones a, .acciones form { color: #4a4e69; text-decoration: underline; font-weight: 600; background: none; border: none; cursor: pointer; display: inline; }
+    .acciones a:hover, .acciones form:hover { color: #23223b; }
+  </style>
+</head>
+<body>
+  {% include 'usuarios/header.html' %}
+  <div class="usuarios-container">
+    <div class="usuarios-header">
+      <h1><i class="fa-solid fa-users"></i> Gestión de Usuarios</h1>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Compras</th>
+          <th>Total Gastado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.first_name }} {{ usuario.last_name }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.rol|default:'-' }}</td>
+          <td>{{ usuario.total_ventas|default:0 }}</td>
+          <td>${{ usuario.total_gastado|default:0|floatformat:0 }}</td>
+          <td class="acciones">
+            <a href="{% url 'historial:historial_usuario_admin' usuario.id %}"><i class="fa-solid fa-eye"></i> Historial</a>
+            <a href="{% url 'usuarios:detalle_usuario' usuario.id %}"><i class="fa-solid fa-id-card"></i> Detalles</a>
+            <a href="{% url 'usuarios:editar_usuario' usuario.id %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+            <form action="{% url 'usuarios:eliminar_usuario' usuario.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este usuario?');"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" style="text-align:center;">No hay usuarios registrados.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{% url 'usuarios:menu' %}" style="color:#4a4e69;text-decoration:underline;font-weight:600;"><i class="fa-solid fa-arrow-left"></i> Volver al panel</a>
+  </div>
+</body>
+</html>

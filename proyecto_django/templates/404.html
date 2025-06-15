@@ -1,0 +1,94 @@
+<!-- templates/404.html -->
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Página no encontrada | Stock Mania</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/principal.css" />
+    <style>
+      .error-hero {
+        background-image: url("/static/img/imgprincipal.jpg");
+        background-size: cover;
+        background-position: center;
+        height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .error-overlay {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 18px;
+        padding: 2.5rem 2.5rem 2rem 2.5rem;
+        text-align: center;
+        box-shadow: 0 0 32px 0 rgba(34, 34, 59, 0.13);
+        max-width: 420px;
+        margin: 2rem auto;
+        border: 2.5px solid #e0dedb;
+        animation: header-fadein 0.7s cubic-bezier(0.4, 1.4, 0.6, 1) 1;
+      }
+      .error-404-title {
+        font-size: 6rem;
+        color: #c9184a;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 8px rgba(34, 34, 59, 0.08);
+      }
+      .error-msg {
+        font-size: 1.35rem;
+        color: #23223b;
+        margin-bottom: 1.5rem;
+      }
+      .error-icon {
+        font-size: 3.2rem;
+        color: #4a4e69;
+        margin-bottom: 0.7rem;
+        display: block;
+        animation: shake 1.2s infinite alternate cubic-bezier(0.4, 1.4, 0.6, 1);
+      }
+      @keyframes shake {
+        0% {
+          transform: rotate(-6deg);
+        }
+        100% {
+          transform: rotate(6deg);
+        }
+      }
+      .btn {
+        padding: 0.7rem 1.5rem;
+        background-color: #4a4e69;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+        box-shadow: 0 2px 8px rgba(34, 34, 59, 0.09);
+        display: inline-block;
+        margin-top: 0.7rem;
+      }
+      .btn:hover {
+        background-color: #23223b;
+      }
+    </style>
+  </head>
+  <body>
+    {% include "usuarios/header.html" %}
+    <main>
+      <section class="error-hero">
+        <div class="error-overlay">
+          <span class="error-icon" aria-label="Página no encontrada">🛒</span>
+          <div class="error-404-title">404</div>
+          <div class="error-msg">
+            ¡Ups! La página que buscas no existe en <b>Stock Mania</b>.
+          </div>
+          <a href="{% url 'usuarios:principal' %}" class="btn"
+            >Volver al inicio</a
+          >
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

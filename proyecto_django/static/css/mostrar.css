@@ -1,0 +1,101 @@
+/* Reset y fuente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Fondo difuminado */
+  .background {
+    background-image: url('/static/img/verq.jpg'); 
+    background-size: cover;
+    background-position: center;
+    filter: blur(6px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  
+  /* Panel central translúcido */
+  .qr-panel {
+    width: 90%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.88);
+    padding: 30px 25px;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+    text-align: center;
+  }
+  
+  /* Título */
+  .qr-panel h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+  
+  .qr-panel h2 span {
+    display: inline-block;
+    margin-top: 5px;
+  }
+  
+  /* Imagen del QR */
+  .qr-box {
+    background-color: #fff;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  
+  .qr-box img {
+    width: 200px;
+    height: 200px;
+  }
+  
+  /* Párrafos informativos */
+  .qr-panel .info {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 15px;
+  }
+  
+  .qr-panel .alt-option {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 25px;
+  }
+  
+  /* Enlaces */
+  .qr-panel a {
+    color: #1a4aff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .qr-panel a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Enlace al menú */
+  .menu-link {
+    display: inline-block;
+    font-size: 15px;
+    margin-top: 10px;
+  }
+  
+  

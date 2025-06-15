@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Prenda | Stock Mania</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/static/css/principal.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f2e9e4 0%, #e8ddd4 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .admin-header {
+      background: linear-gradient(135deg, #23223b 0%, #4a4e69 100%);
+      color: white;
+      padding: 1.5rem 0 1rem 0;
+      text-align: center;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 4px 16px rgba(34,34,59,0.08);
+      margin-bottom: 2rem;
+    }
+    .admin-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+    .formulario-producto {
+      max-width: 430px;
+      margin: 2.5rem auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(34,34,59,0.10);
+      padding: 2.5rem 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .formulario-producto h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #23223b;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .formulario-producto form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .formulario-producto input, .formulario-producto select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #d1d1d1;
+      font-size: 1rem;
+      background: #f8f8f8;
+      margin-bottom: 0.2rem;
+      transition: border 0.2s;
+    }
+    .formulario-producto input:focus, .formulario-producto select:focus {
+      border: 1.5px solid #4a4e69;
+      outline: none;
+    }
+    .formulario-producto button[type="submit"] {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 0.9rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(40,167,69,0.15);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      justify-content: center;
+    }
+    .formulario-producto button[type="submit"]:hover {
+      background: #218838;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .volver-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: #4a4e69;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .volver-link:hover {
+      color: #23223b;
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .formulario-producto {
+        padding: 1.2rem 0.5rem;
+      }
+      .admin-header h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-header">
+    <h1><i class="fa-solid fa-pen-to-square"></i> {% if form.instance.pk %}Editar{% else %}Crear{% endif %} Prenda</h1>
+  </div>
+  <div class="formulario-producto">
+    <h2>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Prenda</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+    </form>
+    <a href="{% url 'prendas:listar_prendas' %}" class="volver-link"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+  </div>
+</body>
+</html>

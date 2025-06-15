@@ -1,0 +1,14 @@
+{% extends 'usuarios/header.html' %}
+{% block content %}
+<div class="usuarios-container" style="max-width:600px;margin:2rem auto;background:#fff;padding:2rem;border-radius:18px;box-shadow:0 4px 16px rgba(34,34,59,0.10);">
+  <h2 style="text-align:center;margin-bottom:1.5rem;">Editar Usuario</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button type="submit" class="option-card"><i class="fa-solid fa-save"></i> Guardar Cambios</button>
+      <a href="{% url 'usuarios:gestion_usuarios' %}" style="margin-left:1rem;">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

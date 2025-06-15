@@ -1,0 +1,18 @@
+{% extends 'usuarios/header.html' %}
+{% block content %}
+<div class="usuarios-container" style="max-width:600px;margin:2rem auto;background:#fff;padding:2rem;border-radius:18px;box-shadow:0 4px 16px rgba(34,34,59,0.10);">
+  <h2 style="text-align:center;margin-bottom:1.5rem;">Detalles del Usuario</h2>
+  <ul style="list-style:none;padding:0;">
+    <li><strong>Usuario:</strong> {{ usuario.username }}</li>
+    <li><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</li>
+    <li><strong>Email:</strong> {{ usuario.email }}</li>
+    <li><strong>Rol:</strong> {{ usuario.rol|default:'-' }}</li>
+    <li><strong>Fecha de registro:</strong> {{ usuario.date_joined|date:'d/m/Y H:i' }}</li>
+    <li><strong>Último acceso:</strong> {{ usuario.last_login|date:'d/m/Y H:i' }}</li>
+  </ul>
+  <div style="margin-top:2rem;text-align:center;">
+    <a href="{% url 'usuarios:editar_usuario' usuario.id %}" class="option-card"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+    <a href="{% url 'usuarios:gestion_usuarios' %}" style="margin-left:1rem;">Volver</a>
+  </div>
+</div>
+{% endblock %}

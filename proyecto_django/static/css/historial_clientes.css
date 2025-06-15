@@ -1,0 +1,94 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+}
+
+.container {
+  background: url('almacen.jpg') no-repeat center center/cover;
+  height: 100vh;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #c14444;
+  text-align: center;
+  padding: 10px 0;
+  color: #000;
+  border-bottom: 5px solid #258e97;
+}
+
+header h1 {
+  font-size: 2em;
+  text-transform: lowercase;
+}
+
+header h2 {
+  background-color: #9fc09b;
+  padding: 5px 0;
+  font-size: 1.2em;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 60px;
+  flex: 1;
+}
+
+/* Perfil de usuario */
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.profile img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.username {
+  background-color: #ddd;
+  padding: 8px 20px;
+  margin-top: 15px;
+  font-weight: bold;
+  text-transform: lowercase;
+  font-size: 1.1em;
+}
+
+/* Información */
+.info {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.info h3 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.info-item {
+  background-color: #e0e0e0;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+}

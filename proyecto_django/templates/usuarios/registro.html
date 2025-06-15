@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar nuevo usuario</title>
+  <link rel="stylesheet" href="/static/css/registro.css">
+</head>
+<body>
+
+<form method="post">
+  {% csrf_token %}
+  <h2>Registrar nuevo usuario</h2>
+  {{ form.as_p }}
+  <button type="submit">Registrar</button>
+</form>
+
+{% if messages %}
+  {% for message in messages %}
+    <p>{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+</body>
+</html>
+

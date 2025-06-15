@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(#dff6f9, #fdf5f5);
+}
+
+.titulo {
+  font-family: 'Segoe UI Black', sans-serif;
+  font-size: 2rem;
+  color: #000;
+  margin: 0 auto;
+}
+
+.seccion, .volver {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+}
+
+.volver i {
+  color: green;
+  margin-left: 5px;
+}
+
+.catalogo {
+  display: flex;
+  justify-content: space-around;
+  padding: 30px 20px;
+  background-image: url('https://img.freepik.com/foto-gratis/carrito-compras-amarillo-sobre-fondo-azul-compras-concepto-descuento-compras-compras-en-linea_144627-36079.jpg');
+  background-size: cover;
+  background-position: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.producto {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  width: 220px;
+}
+
+.producto img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.acciones {
+  margin-top: 10px;
+}
+
+.btn-comprar, .btn-anadir {
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.btn-comprar {
+  color: #8b0000;
+}
+
+.btn-anadir {
+  color: #333;
+}
+
+.paginacion {
+  background-color: #4a2e2e;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.paginacion .pag-btn,
+.paginacion .pag-num {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #000;
+  margin: 0 5px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.paginacion .pag-btn:hover,
+.paginacion .pag-num:hover {
+  background-color: #ddd;
+}
