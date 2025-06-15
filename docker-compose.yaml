@@ -7,21 +7,24 @@ services:
     volumes:
       # Volumen con nombre para persistencia garantizada de archivos media
       - media_volume:/app/media
-      # Monta la base de datos para persistencia
-      - ./proyecto_django/db.sqlite3:/app/proyecto_django/db.sqlite3
+      # Nuevo volumen para la base de datos
+      - db_volume:/app/database
     environment:
       # Configuración para Django
       DJANGO_SETTINGS_MODULE: proyecto_django.settings.local
       DEBUG: "False"
     restart: unless-stopped
-    command:
-      [
-        "uv",
-        "run",
-        "python",
-        "proyecto_django/manage.py",
-        "runserver",
-        "0.0.0.0:8000",
-      ]
+    command: >
+      sh -c "
+      # Copiar la base de datos existente al volumen si no existe
+      if [ ! -f /app/database/db.sqlite3 ]; then
+        cp /app/proyecto_django/db.sqlite3 /app/database/db.sqlite3
+      fi
+      # Crear enlace simbólico a la ubicación esperada
+      ln -sf /app/database/db.sqlite3 /app/proyecto_django/db.sqlite3
+      # Ejecutar el servidor
+      exec uv run python proyecto_django/manage.py runserver 0.0.0.0:8000
+      "
 volumes:
   media_volume:
+  db_volume:
