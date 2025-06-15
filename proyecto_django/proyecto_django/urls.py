@@ -21,6 +21,7 @@ from django.conf.urls import handler404
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.static import serve
 
 
 
@@ -30,11 +31,9 @@ urlpatterns = [
     re_path('',include(('applications.usuarios.urls', 'usuarios'), namespace='usuarios')),  # Ajusta según tu estructura
     re_path('prendas/', include(('applications.prendas.urls', 'prendas'), namespace='prendas')),
     re_path('historial/', include(('applications.historial.urls', 'historial'), namespace='historial')),
+    # Servir archivos media y static siempre (para Docker)
+    path('media/<path:path>', views.serve_media, name='serve_media'),
+    path('static/<path:path>', views.serve_static, name='serve_static'),
 ]
-
-# Servir archivos media y static en desarrollo
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'proyecto_django.views.mi_vista_404'
